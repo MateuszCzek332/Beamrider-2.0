@@ -1,0 +1,1 @@
+(()=>{"use strict";console.log("ABC"),console.log("ABC1"),console.log("ABC2")})();
