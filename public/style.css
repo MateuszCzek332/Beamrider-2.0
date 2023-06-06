@@ -21,7 +21,8 @@ h2 {
 
 canvas {
     border: 5px solid blue;
-    width: 1000px;
+    width: 800px;
+    height: 500px;
     position: absolute;
     left: 0;
     right: 0;
