@@ -7,6 +7,10 @@ export class BackgroundManager {
         this.createStars()
     }
 
+    update = (ctx: CanvasRenderingContext2D) => {
+        this.drawStars(ctx)
+    }
+
     createStars = () => {
         let target = {
             x: 150,
