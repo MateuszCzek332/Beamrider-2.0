@@ -1,3 +1,5 @@
+import { Star } from "./Star";
+
 export class BackgroundManager {
 
     private readonly starsWith = 5
@@ -50,7 +52,3 @@ export class BackgroundManager {
     }
 }
 
-interface Star {
-    x: number;
-    y: number;
-}
