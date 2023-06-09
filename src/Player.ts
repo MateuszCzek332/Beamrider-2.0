@@ -8,6 +8,7 @@ export class Player extends GameObject {
     canMove: boolean = true;
     targetX: number = 150;
     bullet: PlayerBullet | null = null;
+    ammo: number = 3;
     constructor() {
         super('./gfx/player/1.PNG')
         this.x = 150
@@ -37,8 +38,10 @@ export class Player extends GameObject {
                     }
                 }
                 else if (event.isComposing || event.keyCode === 38) {
-                    if (this.canMove && this.bullet == null)
+                    if (this.canMove && this.bullet == null && this.ammo > 0) {
                         this.bullet = new PlayerBullet(2, this.x)
+                        this.ammo--
+                    }
                 }
             }
         });
@@ -46,6 +49,7 @@ export class Player extends GameObject {
 
     update = (ctx: CanvasRenderingContext2D) => {
         ctx.drawImage(this.image, this.x - this.xd, this.y - this.yd);
+        this.drawAmmo(ctx)
         if (this.bullet != null) {
             this.bullet.update(ctx);
             if (this.bullet.state == 0)
@@ -58,6 +62,13 @@ export class Player extends GameObject {
             this.x = this.targetX;
         }
 
+    }
+
+    drawAmmo = (ctx: CanvasRenderingContext2D) => {
+        for (let i: number = 0; i < this.ammo; i++) {
+            ctx.fillStyle = "purple";
+            ctx.fillRect(280 - i * 20, 10, 10, 10)
+        }
     }
 
 }
