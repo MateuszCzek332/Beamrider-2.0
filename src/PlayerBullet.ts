@@ -1,9 +1,9 @@
 import { GameObject } from "./GameObject";
 import { Star } from "./Star";
 
-export class Bullet extends GameObject {
+export class PlayerBullet extends GameObject {
     private readonly speed: number = 6.5;
-    private readonly topBounty: number = 33;
+    private readonly topBounty: number = 35;
     private readonly target: Star = {
         x: 150,
         y: -60
@@ -13,7 +13,7 @@ export class Bullet extends GameObject {
     vx: number;
     vy: number;
     constructor(type: number, x: number) {
-        super(type == 1 ? '/gfx/bullets/player/bullet1.png' : '')
+        super(type == 1 ? '/gfx/bullets/player/bullet1.png' : '/gfx/bullets/player/bullet2-1.png')
         this.type = type;
         this.x = x;
         this.y = 120;
@@ -28,9 +28,20 @@ export class Bullet extends GameObject {
         this.x -= this.vx;
         this.y -= this.vy;
 
-        if (this.y < this.topBounty) {
+        if (this.type == 2) {
+            if (this.y < 60) {
+                this.image.src = '/gfx/bullets/player/bullet2-3.png'
+            }
+            else if (this.y < 100) {
+                this.image.src = '/gfx/bullets/player/bullet2-2.png'
+            }
+
+        }
+
+        if ((this.type == 1 && this.y < this.topBounty) || (this.type == 2 && this.y < 0)) {
             this.state = 0;
         }
+
     }
 
 }

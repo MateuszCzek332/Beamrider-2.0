@@ -1,5 +1,5 @@
 import { GameObject } from "./GameObject"
-import { Bullet } from "./Bullet";
+import { PlayerBullet } from "./PlayerBullet";
 
 export class Player extends GameObject {
     private readonly s = 14;
@@ -7,7 +7,7 @@ export class Player extends GameObject {
     pos: number = 0;
     canMove: boolean = true;
     targetX: number = 150;
-    bullet: Bullet | null = null;
+    bullet: PlayerBullet | null = null;
     constructor() {
         super('./gfx/player/1.PNG')
         this.x = 150
@@ -33,8 +33,12 @@ export class Player extends GameObject {
                 }
                 else if (event.isComposing || event.keyCode === 32) {
                     if (this.canMove && this.bullet == null) {
-                        this.bullet = new Bullet(1, this.x)
+                        this.bullet = new PlayerBullet(1, this.x)
                     }
+                }
+                else if (event.isComposing || event.keyCode === 38) {
+                    if (this.canMove && this.bullet == null)
+                        this.bullet = new PlayerBullet(2, this.x)
                 }
             }
         });
