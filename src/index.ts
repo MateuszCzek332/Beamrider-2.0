@@ -1,4 +1,5 @@
 import { BackgroundManager } from "./BackgroundManager"
+import { LevelController } from "./LevelController";
 import { Player } from "./Player";
 
 const fps = 30;
@@ -9,6 +10,7 @@ class Game {
     canvas: HTMLCanvasElement;
     ctx: CanvasRenderingContext2D
     bgManager: BackgroundManager = new BackgroundManager();
+    lvController: LevelController = new LevelController()
     player: Player = new Player()
     constructor() {
         let canvas = document.getElementById('canvas') as HTMLCanvasElement;
@@ -26,6 +28,7 @@ class Game {
             this.ctx.clearRect(0, 0, 800, 500)
             this.bgManager.update(this.ctx)
             this.player.update(this.ctx)
+            this.lvController.update(this.ctx)
             this.then = this.now
         }
         requestAnimationFrame(this.animate)
