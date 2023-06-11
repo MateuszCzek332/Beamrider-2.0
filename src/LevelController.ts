@@ -1,28 +1,45 @@
 import { Star } from "./Star";
-import { Enemy } from "./Enemy";
-
+import { Ufo } from "./Ufo";
+import { Player } from "./Player";
+import { Helpers } from "./Helpers";
 export class LevelController {
 
     private readonly starsWith = 5
     private readonly starsHeight = 2;
     stars: Star[][] = [];
-    enemyTab: Enemy[] = []
+    ufoTab: Ufo[] = []
     constructor() {
-        this.spawnEnemy()
+        this.spawnUfo()
     }
 
-    update = (ctx: CanvasRenderingContext2D) => {
-        this.drawStars(ctx)
+    update = (ctx: CanvasRenderingContext2D, player: Player) => {
+        this.drawUfo(ctx, player)
     }
 
-    spawnEnemy = () => {
-        this.enemyTab.push(new Enemy())
-    }
+    drawUfo = (ctx: CanvasRenderingContext2D, player: Player) => {
+        for (let i: number = 0; i < this.ufoTab.length; i++) {
+            let ufo = this.ufoTab[i]
+            switch (ufo.state) {
+                case 0:
+                    this.ufoTab.splice(i, 1)
+                    player.bullet = null
+                    this.spawnUfo()
+                    break
+                case 1:
 
-    drawStars = (ctx: CanvasRenderingContext2D) => {
-        for (let i: number = 0; i < this.enemyTab.length; i++) {
-            this.enemyTab[i].update(ctx)
+                    if (Helpers.checkCollision(this.ufoTab[i], player.bullet))
+                        ufo.state = 0
+                    else
+                        ufo.update(ctx)
+                    break
+            }
+
         }
     }
+
+    spawnUfo = () => {
+        this.ufoTab.push(new Ufo())
+    }
+
 }
 

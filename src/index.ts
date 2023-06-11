@@ -28,7 +28,7 @@ class Game {
             this.ctx.clearRect(0, 0, 800, 500)
             this.bgManager.update(this.ctx)
             this.player.update(this.ctx)
-            this.lvController.update(this.ctx)
+            this.lvController.update(this.ctx, this.player)
             this.then = this.now
         }
         requestAnimationFrame(this.animate)

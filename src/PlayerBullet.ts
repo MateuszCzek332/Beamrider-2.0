@@ -2,8 +2,8 @@ import { GameObject } from "./GameObject";
 import { Star } from "./Star";
 
 export class PlayerBullet extends GameObject {
-    private readonly speed: number = 6.5;
-    private readonly topBounty: number = 35;
+    private readonly speed: number = 10;
+    private readonly topBounty: number = 33;
     private readonly target: Star = {
         x: 150,
         y: -60

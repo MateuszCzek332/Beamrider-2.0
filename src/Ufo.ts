@@ -1,12 +1,10 @@
 import { GameObject } from "./GameObject"
+import { Player } from "./Player";
 
-export class Enemy extends GameObject {
+export class Ufo extends GameObject {
     private readonly s = 4;
     speed: number = 0;
-    // pos: number = 0;
-    // canMove: boolean = true;
-    // targetX: number = 150;
-    // ammo: number = 3;
+    state: number = 1;
     constructor() {
         super('./gfx/enemy/ufo/5.png')
         this.x = 150
