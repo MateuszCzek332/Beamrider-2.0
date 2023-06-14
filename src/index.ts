@@ -16,6 +16,8 @@ class Game {
         let canvas = document.getElementById('canvas') as HTMLCanvasElement;
         let context = canvas.getContext("2d");
         this.canvas = canvas;
+        this.canvas.width = 800
+        this.canvas.height = 500
         this.ctx = context!;
         // this.bgManager.drawStars(this.ctx)
         this.animate()

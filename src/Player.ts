@@ -2,7 +2,9 @@ import { GameObject } from "./GameObject"
 import { PlayerBullet } from "./PlayerBullet";
 
 export class Player extends GameObject {
-    private readonly s = 14;
+    private readonly s = 30;
+    private readonly startX = 400;
+
     speed: number = 0;
     pos: number = 0;
     canMove: boolean = true;
@@ -11,8 +13,8 @@ export class Player extends GameObject {
     ammo: number = 3;
     constructor() {
         super('./gfx/player/1.PNG')
-        this.x = 150
-        this.y = 133
+        this.x = this.startX
+        this.y = 435
 
         document.addEventListener("keydown", (event) => {
             if (this.canMove) {
@@ -21,7 +23,7 @@ export class Player extends GameObject {
                         this.canMove = false
                         this.pos--
                         this.speed = -this.s
-                        this.targetX = 150 + this.pos * 52
+                        this.targetX = this.startX + this.pos * 140
                     }
                 }
                 else if (event.isComposing || event.keyCode === 39) {
@@ -29,7 +31,7 @@ export class Player extends GameObject {
                         this.canMove = false
                         this.pos++
                         this.speed = this.s
-                        this.targetX = 150 + this.pos * 52
+                        this.targetX = this.startX + this.pos * 140
                     }
                 }
                 else if (event.isComposing || event.keyCode === 32) {
@@ -67,7 +69,7 @@ export class Player extends GameObject {
     drawAmmo = (ctx: CanvasRenderingContext2D) => {
         for (let i: number = 0; i < this.ammo; i++) {
             ctx.fillStyle = "purple";
-            ctx.fillRect(280 - i * 20, 10, 10, 10)
+            ctx.fillRect(754 - i * 44, 22, 22, 22)
         }
     }
 

@@ -2,8 +2,8 @@ import { Star } from "./Star";
 
 export class BackgroundManager {
 
-    private readonly starsWith = 5
-    private readonly starsHeight = 2;;
+    private readonly starsWith = 10
+    private readonly starsHeight = 3;
     stars: Star[][] = [];
     constructor() {
         this.createStars()
@@ -15,22 +15,20 @@ export class BackgroundManager {
 
     createStars = () => {
         let target = {
-            x: 150,
-            y: -60
+            x: 400,
+            y: -200
         }
-        let w: number = 5;
-        let h: number = 2;
         for (let i: number = 0; i <= 6; i += 1) {
-            let y: number = 120;
-            let x: number = i * 50;
-            let extraPadding: number = i == 0 ? -30 : i == 6 ? 30 : 0
+            let y: number = 400;
+            let x: number = i * 133.3;
+            let extraPadding: number = i == 0 ? -90 : i == 6 ? 90 : 0
 
-            let dx = (target.x - x) / 16
-            let dy = (target.y - y) / 16
+            let dx = (target.x - x) / 19
+            let dy = (target.y - y) / 19
             this.stars[i] = []
-            for (let j: number = 0; j < 12; j++) {
-                let starX = x + j * dx - w / 2 + extraPadding
-                let starY = y + j * dy - h / 2
+            for (let j: number = 0; j < 11; j++) {
+                let starX = x + j * dx - this.starsWith / 2 + extraPadding
+                let starY = y + j * dy - this.starsHeight / 2
                 if (starY < 26)
                     break
                 this.stars[i].push({

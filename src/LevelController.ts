@@ -20,17 +20,14 @@ export class LevelController {
         for (let i: number = 0; i < this.ufoTab.length; i++) {
             let ufo = this.ufoTab[i]
             switch (ufo.state) {
-                case 0:
-                    this.ufoTab.splice(i, 1)
-                    player.bullet = null
-                    this.spawnUfo()
-                    break
                 case 1:
-
-                    if (Helpers.checkCollision(this.ufoTab[i], player.bullet))
-                        ufo.state = 0
-                    else
-                        ufo.update(ctx)
+                    ufo.update(ctx, player)
+                    break
+                case 0:
+                    player.bullet = null
+                    this.ufoTab.splice(i, 1)
+                    i--
+                    this.spawnUfo()
                     break
             }
 

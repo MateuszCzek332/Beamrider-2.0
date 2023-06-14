@@ -2,11 +2,11 @@ import { GameObject } from "./GameObject";
 import { Star } from "./Star";
 
 export class PlayerBullet extends GameObject {
-    private readonly speed: number = 10;
-    private readonly topBounty: number = 33;
+    private readonly speed: number = 20;
+    private readonly topBounty: number = 120;
     private readonly target: Star = {
-        x: 150,
-        y: -60
+        x: 400,
+        y: -200
     }
     state: number = 1;
     type: number;
@@ -16,9 +16,9 @@ export class PlayerBullet extends GameObject {
         super(type == 1 ? '/gfx/bullets/player/bullet1.png' : '/gfx/bullets/player/bullet2-1.png')
         this.type = type;
         this.x = x;
-        this.y = 120;
+        this.y = 400;
         let xdiff = x - this.target.x
-        let ydiff = 180
+        let ydiff = this.y - this.target.y
         this.vx = xdiff / this.speed
         this.vy = ydiff / this.speed
     }
@@ -29,10 +29,10 @@ export class PlayerBullet extends GameObject {
         this.y -= this.vy;
 
         if (this.type == 2) {
-            if (this.y < 60) {
+            if (this.y < 150) {
                 this.image.src = '/gfx/bullets/player/bullet2-3.png'
             }
-            else if (this.y < 100) {
+            else if (this.y < 300) {
                 this.image.src = '/gfx/bullets/player/bullet2-2.png'
             }
 

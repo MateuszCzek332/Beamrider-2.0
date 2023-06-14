@@ -16,9 +16,9 @@ export abstract class GameObject {
         }
     }
 
-    update = (ctx: CanvasRenderingContext2D) => {
-        ctx.drawImage(this.image, this.x - this.xd, this.y - this.yd);
-    }
+    // update = (ctx: CanvasRenderingContext2D) => {
+    //     ctx.drawImage(this.image, this.x - this.xd, this.y - this.yd);
+    // }
 
 }
 
