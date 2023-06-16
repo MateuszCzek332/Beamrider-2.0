@@ -1,7 +1,9 @@
 import { Star } from "./Star";
 import { Ufo } from "./Ufo";
 import { Player } from "./Player";
-import { Helpers } from "./Helpers";
+import { Boss } from "./Boss";
+
+
 export class LevelController {
 
     level: number = 1;
@@ -10,6 +12,7 @@ export class LevelController {
     enemyToKill = this.lvGoal;
 
     stars: Star[][] = [];
+    boss: Boss | null = null;
     ufoTab: Ufo[] = []
     constructor() {
         this.spawnUfo()
@@ -45,30 +48,48 @@ export class LevelController {
     }
 
     updateUfo = (ctx: CanvasRenderingContext2D, player: Player) => {
-        for (let i: number = 0; i < this.ufoTab.length; i++) {
-            let ufo = this.ufoTab[i]
-            switch (ufo.state) {
-                case 1:
-                    ufo.update(ctx, player)
-                    break
-                case 0:
-                    player.bullet = null;
-                    this.ufoTab.splice(i, 1);
-                    i--;
-                    this.enemyToKill--;
-                    this.points += 44;
-                    this.checkLv()
-                    this.spawnUfo()
-                    break
-            }
 
+        if (this.boss == null) {
+            for (let i: number = 0; i < this.ufoTab.length; i++) {
+                let ufo = this.ufoTab[i]
+                switch (ufo.state) {
+                    case 1:
+                        ufo.update(ctx, player)
+                        break
+                    case 0:
+                        player.bullet = null;
+                        this.ufoTab.splice(i, 1);
+                        i--;
+                        this.enemyToKill--;
+                        this.points += 44;
+                        this.checkLv()
+                        this.spawnUfo()
+                        break
+                }
+
+            }
         }
+        else {
+            switch (this.boss.state) {
+                case 1:
+                    this.boss.update(ctx, player)
+                    break;
+                case 0:
+                    this.boss = null;
+                    this.level++;
+                    break;
+            }
+        }
+
     }
 
     checkLv = () => {
         if (this.enemyToKill == 0) {
             this.enemyToKill = this.lvGoal;
-            this.level++
+            // this.level++;
+            this.ufoTab = [];
+            this.boss = new Boss()
+
         }
     }
 

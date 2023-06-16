@@ -10,7 +10,7 @@ export class Player extends GameObject {
     canMove: boolean = true;
     targetX: number = 150;
     bullet: PlayerBullet | null = null;
-    ammo: number = 3;
+    ammo: number = 300;
     constructor() {
         super('./gfx/player/1.PNG')
         this.x = this.startX
