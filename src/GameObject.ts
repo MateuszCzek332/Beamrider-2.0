@@ -6,14 +6,21 @@ export abstract class GameObject {
     yd: number = 0;
     width: number = 0;
     height: number = 0;
+    xHitBox: number = 0;
+    yHitBox: number = 0;
     constructor(src: string) {
         this.image.src = src
         this.image.onload = () => {
-            this.width = this.image.width;
-            this.height = this.image.height;
-            this.xd = this.image.width / 2
-            this.yd = this.image.height / 2
+            this.imgOnLoad()
         }
+    }
+
+    imgOnLoad() {
+        this.width = this.image.width;
+        this.height = this.image.height;
+        this.xd = this.xHitBox = this.image.width / 2
+        this.yd = this.yHitBox = this.image.height / 2
+        console.log(this.xHitBox, this.yHitBox)
     }
 
     // update = (ctx: CanvasRenderingContext2D) => {

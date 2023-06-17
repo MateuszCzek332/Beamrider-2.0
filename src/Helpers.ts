@@ -1,15 +1,15 @@
 import { GameObject } from "./GameObject";
 
 export class Helpers {
-    static checkCollision = (obj1: GameObject, obj2: GameObject | null) => {
+    static checkCollision = (obj1: GameObject | null, obj2: GameObject | null) => {
         if (obj1 == null || obj2 == null)
             return false;
 
         if (
-            obj1.x + obj1.xd < obj2.xd + obj2.x + obj2.width &&
-            obj1.x + obj1.xd + obj1.width > obj2.x + obj2.xd &&
-            obj1.y + obj1.yd < obj2.y + obj2.yd + obj2.height &&
-            obj1.height + obj1.y + + obj1.yd > obj2.y + obj2.yd
+            obj1.x - obj1.xHitBox < obj2.x + obj2.xHitBox &&
+            obj1.x + obj1.xHitBox > obj2.x - obj2.xHitBox &&
+            obj1.y - obj1.yHitBox < obj2.y + obj2.yHitBox &&
+            obj1.y + obj1.yHitBox > obj2.y - obj2.yHitBox
         )
             return true;
         return false;

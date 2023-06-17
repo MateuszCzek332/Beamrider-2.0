@@ -14,6 +14,9 @@ export class PlayerBullet extends GameObject {
     vy: number;
     constructor(type: number, x: number) {
         super(type == 1 ? '/gfx/bullets/player/bullet1.png' : '/gfx/bullets/player/bullet2-1.png')
+        this.xHitBox = 30;
+        this.yHitBox = 50
+        console.log(this.xHitBox, this.yHitBox)
         this.type = type;
         this.x = x;
         this.y = 400;
@@ -21,6 +24,16 @@ export class PlayerBullet extends GameObject {
         let ydiff = this.y - this.target.y
         this.vx = xdiff / this.speed
         this.vy = ydiff / this.speed
+    }
+
+    imgOnLoad() {
+        this.width = this.image.width;
+        this.height = this.image.height;
+        this.xd = this.image.width / 2
+        this.yd = this.image.height / 2
+        this.xHitBox = 23
+        this.yHitBox = 15
+        console.log(this.xHitBox, this.yHitBox)
     }
 
     update = (ctx: CanvasRenderingContext2D) => {
