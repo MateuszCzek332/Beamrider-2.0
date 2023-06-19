@@ -10,7 +10,7 @@ class Game {
     canvas: HTMLCanvasElement;
     ctx: CanvasRenderingContext2D
     bgManager: BackgroundManager = new BackgroundManager();
-    lvController: LevelController = new LevelController()
+    lvController: LevelController = new LevelController(this.bgManager.stars)
     player: Player = new Player()
     constructor() {
         let canvas = document.getElementById('canvas') as HTMLCanvasElement;

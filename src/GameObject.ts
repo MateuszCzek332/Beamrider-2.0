@@ -20,7 +20,6 @@ export abstract class GameObject {
         this.height = this.image.height;
         this.xd = this.xHitBox = this.image.width / 2
         this.yd = this.yHitBox = this.image.height / 2
-        console.log(this.xHitBox, this.yHitBox)
     }
 
     // update = (ctx: CanvasRenderingContext2D) => {

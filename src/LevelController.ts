@@ -2,6 +2,8 @@ import { Star } from "./Star";
 import { Ufo } from "./Ufo";
 import { Player } from "./Player";
 import { Boss } from "./Boss";
+import { BossHelper } from "./BossHelper";
+import { Helpers } from "./Helpers";
 
 
 export class LevelController {
@@ -13,13 +15,20 @@ export class LevelController {
 
     stars: Star[][] = [];
     boss: Boss | null = null;
+    bossHelpers: BossHelper[] = []
     ufoTab: Ufo[] = []
-    constructor() {
+    constructor(stars: Star[][]) {
+        this.stars = stars
         this.spawnUfo()
     }
 
     update = (ctx: CanvasRenderingContext2D, player: Player) => {
-        this.updateUfo(ctx, player)
+        if (this.boss == null) {
+            this.updateLevel(ctx, player)
+        }
+        else {
+            this.updateBossFight(ctx, player)
+        }
         this.drawUI(ctx)
     }
 
@@ -47,50 +56,79 @@ export class LevelController {
 
     }
 
-    updateUfo = (ctx: CanvasRenderingContext2D, player: Player) => {
-
-        if (this.boss == null) {
-            for (let i: number = 0; i < this.ufoTab.length; i++) {
-                let ufo = this.ufoTab[i]
-                switch (ufo.state) {
-                    case 1:
-                        ufo.update(ctx, player)
-                        break
-                    case 0:
-                        player.bullet = null;
-                        this.ufoTab.splice(i, 1);
-                        i--;
-                        this.enemyToKill--;
-                        this.points += 44;
-                        this.checkLv()
-                        this.spawnUfo()
-                        break
-                }
-
-            }
+    updateBossFight = (ctx: CanvasRenderingContext2D, player: Player) => {
+        switch (this.boss?.state) {
+            case 1:
+                this.boss.update(ctx, player)
+                break;
+            case 0:
+                this.boss = null;
+                setTimeout(() => {
+                    this.level++;
+                    this.bossHelpers = [];
+                    this.enemyToKill = this.lvGoal
+                    this.spawnUfo()
+                }, 1100)
+                break;
         }
-        else {
-            switch (this.boss.state) {
+
+        for (let i: number = 0; i < this.bossHelpers.length; i++) {
+            let ship = this.bossHelpers[i]
+            switch (ship.state) {
                 case 1:
-                    this.boss.update(ctx, player)
+                    ship.update(ctx, player)
                     break;
                 case 0:
-                    this.boss = null;
-                    this.level++;
+                    this.bossHelpers.splice(i, 1);
+                    i--;
+                    this.points += 44;
+                    setTimeout(() => this.bossHelpers.push(new BossHelper(this.stars)), Helpers.getRandomInt(100, 1000))
                     break;
             }
+
         }
+    }
+
+    updateLevel = (ctx: CanvasRenderingContext2D, player: Player) => {
+
+        for (let i: number = 0; i < this.ufoTab.length; i++) {
+            let ufo = this.ufoTab[i]
+            switch (ufo.state) {
+                case 1:
+                    ufo.update(ctx, player)
+                    break
+                case 0:
+                    player.bullet = null;
+                    this.ufoTab.splice(i, 1);
+                    i--;
+                    this.enemyToKill--;
+                    this.points += 44;
+                    if (this.checkLv())
+                        this.spawnUfo()
+                    break
+            }
+
+        }
+
+
 
     }
 
     checkLv = () => {
         if (this.enemyToKill == 0) {
-            this.enemyToKill = this.lvGoal;
-            // this.level++;
             this.ufoTab = [];
-            this.boss = new Boss()
-
+            setTimeout(() => {
+                this.boss = new Boss()
+                // this.bossHelpers.push(new BossHelper(this.stars))
+                // this.bossHelpers.push(new BossHelper(this.stars))
+                // this.bossHelpers.push(new BossHelper(this.stars))
+                setTimeout(() => this.bossHelpers.push(new BossHelper(this.stars)), Helpers.getRandomInt(10, 1000))
+                setTimeout(() => this.bossHelpers.push(new BossHelper(this.stars)), Helpers.getRandomInt(10, 1000))
+                setTimeout(() => this.bossHelpers.push(new BossHelper(this.stars)), Helpers.getRandomInt(10, 1000))
+            }, 500)
+            return false
         }
+        return true
     }
 
     spawnUfo = () => {
