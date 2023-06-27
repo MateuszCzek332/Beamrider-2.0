@@ -84,6 +84,18 @@ export class LevelController {
                     this.points += 44;
                     setTimeout(() => this.bossHelpers.push(new BossHelper(this.stars)), Helpers.getRandomInt(100, 1000))
                     break;
+                case -1:
+                    player.die()
+                    this.boss = null;
+                    this.bossHelpers = [];
+
+                    if (player.hp > 0) {
+                        setTimeout(() => {
+                            this.level++;
+                            this.enemyToKill = this.lvGoal
+                            this.spawnUfo()
+                        }, 2400)
+                    }
             }
 
         }
@@ -106,6 +118,8 @@ export class LevelController {
                     if (this.checkLv())
                         this.spawnUfo()
                     break
+
+
             }
 
         }

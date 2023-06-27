@@ -40,6 +40,10 @@ export class BossHelper extends Enemy {
             player.bullet = null;
         }
 
+        if (Helpers.checkCollision(this, player)) {
+            this.state = -1;
+        }
+
 
     }
 
