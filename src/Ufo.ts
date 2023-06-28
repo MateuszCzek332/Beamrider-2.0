@@ -3,43 +3,59 @@ import { Player } from "./Player";
 import { Helpers } from "./Helpers";
 import { Enemy } from "./Enemy";
 
+const maxAttackPerLv: number[] = [3, 3]
 
 const attacks = [
     [
         "goToRandomX",
         "goToRandomX",
+        "goToRandomX",
         "goToRandom",
         "goToRandom",
+
+        "goBack",
     ],
     [
         "goToRandomX",
         "goToRandomX",
+        "goToRandom",
+        "goBack",
+    ],
+    [
         "goToRandomX",
         "goToRandomX",
         "goToRandom",
         "goToRandom",
+        "goBack",
     ],
     [
+        "goToRandomX",
+        "goToRandomX",
         "goToRandom",
         "goToRandom",
-    ],
-    [
         "goToRandom",
         "goToRandom",
+        "goBack",
     ],
 ]
 
 export class Ufo extends Enemy {
-    stars: Star[][]
+    static stars: Star[][] = []
+    static readonly maxLv = 2
     attack: string[];
     state: number = 1;
-    constructor(stars: Star[][]) {
+    line: number;
+    level: number;
+    constructor(stars: Star[][], lv: number) {
         super('./gfx/enemy/ufo/5.png', 10)
-        this.stars = stars
+        if (Ufo.stars.length == 0)
+            Ufo.stars = stars
+        this.level = (lv > Ufo.maxLv ? Ufo.maxLv : lv) - 1
         this.x = 400
         this.y = 70
-        this.attack = [...attacks[Helpers.getRandomInt(0, 1)]];
+        this.line = 3
 
+        this.attack = [...attacks[Helpers.getRandomInt(0, maxAttackPerLv[this.level])]];
         this.readComand()
     }
 
@@ -87,15 +103,14 @@ export class Ufo extends Enemy {
                 this.go({ x: x, y: this.y })
                 break
             case "goToRandom":
-                let i = Helpers.getRandomInt(1, 5)
+                this.line = Helpers.getRandomInt(1, 5)
                 let j = Helpers.getRandomInt(4, 10)
-                this.go(this.stars[i][j])
+                this.go(Ufo.stars[this.line][j])
                 break
-            // case "goToStar2":
-            //     this.go(this.star2)
-            //     this.target!.x += 5 * this.vecX;
-            //     this.target!.y += 5 * this.vecY;
-            //     break
+            case "goBack":
+                let k = Ufo.stars[this.line].length - 1
+                this.go(Ufo.stars[this.line][k])
+                break
             // case "die":
             //     this.state = 0;
             //     break

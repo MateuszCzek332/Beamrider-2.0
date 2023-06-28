@@ -146,7 +146,7 @@ export class LevelController {
     }
 
     spawnUfo = () => {
-        this.ufoTab.push(new Ufo(this.stars))
+        this.ufoTab.push(new Ufo(this.stars, this.level))
     }
 
 }
