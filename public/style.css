@@ -7,6 +7,7 @@ h1 {
     font-size: 50px;
     text-align: center;
     font-family: 'Atari';
+    margin-bottom: 5px;
 }
 
 h2 {
@@ -26,7 +27,7 @@ canvas {
     position: absolute;
     left: 0;
     right: 0;
-    margin: 30px auto;
+    margin: 0 auto;
 }
 
 @font-face {
