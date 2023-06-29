@@ -106,6 +106,15 @@ export class LevelController {
         for (let i: number = 0; i < this.ufoTab.length; i++) {
             let ufo = this.ufoTab[i]
             switch (ufo.state) {
+                case 2:
+                    this.ufoTab = [];
+                    player.die()
+                    if (player.hp > 0) {
+                        setTimeout(() => {
+                            this.spawnUfo()
+                        }, 2400)
+                    }
+                    break
                 case 1:
                     ufo.update(ctx, player)
                     break
@@ -146,9 +155,6 @@ export class LevelController {
             this.ufoTab = [];
             setTimeout(() => {
                 this.boss = new Boss()
-                // this.bossHelpers.push(new BossHelper(this.stars))
-                // this.bossHelpers.push(new BossHelper(this.stars))
-                // this.bossHelpers.push(new BossHelper(this.stars))
                 setTimeout(() => this.bossHelpers.push(new BossHelper(this.stars)), Helpers.getRandomInt(10, 1000))
                 setTimeout(() => this.bossHelpers.push(new BossHelper(this.stars)), Helpers.getRandomInt(10, 1000))
                 setTimeout(() => this.bossHelpers.push(new BossHelper(this.stars)), Helpers.getRandomInt(10, 1000))
