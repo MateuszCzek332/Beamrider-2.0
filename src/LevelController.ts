@@ -118,13 +118,26 @@ export class LevelController {
                     if (this.checkLv())
                         this.spawnUfo()
                     break
-
-
+                case -1:
+                    this.enemyToKill--;
+                    this.points += 44;
+                    this.ufoTab = [];
+                    player.die()
+                    if (player.hp > 0) {
+                        setTimeout(() => {
+                            if (this.checkLv())
+                                this.spawnUfo()
+                        }, 2400)
+                    }
+                    break
+                case -2:
+                    this.ufoTab.splice(i, 1);
+                    i--;
+                    this.spawnUfo()
+                    break
             }
 
         }
-
-
 
     }
 

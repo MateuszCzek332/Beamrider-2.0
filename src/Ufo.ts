@@ -12,8 +12,8 @@ const attacks = [
         "goToRandomX",
         "goToRandom",
         "goToRandom",
-
-        "goBack",
+        "goKamikaze",
+        "die",
     ],
     [
         "goToRandomX",
@@ -55,7 +55,8 @@ export class Ufo extends Enemy {
         this.y = 70
         this.line = 3
 
-        this.attack = [...attacks[Helpers.getRandomInt(0, maxAttackPerLv[this.level])]];
+        // this.attack = [...attacks[Helpers.getRandomInt(0, maxAttackPerLv[this.level])]];
+        this.attack = [...attacks[0]];
         this.readComand()
     }
 
@@ -68,10 +69,10 @@ export class Ufo extends Enemy {
         this.y += this.vecY;
 
 
-        if (player.bullet != null && player.bullet.state != 0 && Helpers.checkCollision(this, player.bullet)) {
+        if (Helpers.checkCollision(this, player.bullet))
             this.state = 0;
-            this.speed = 0
-        }
+        else if (Helpers.checkCollision(this, player))
+            this.state = -1;
 
 
         // if ((this.speed > 0 && this.y > 100) || (this.speed < 0 && this.y < 30))
@@ -95,7 +96,8 @@ export class Ufo extends Enemy {
 
     readComand = () => {
         if (this.attack.length == 0)
-            this.attack = [...attacks[Helpers.getRandomInt(2, 3)]]
+            this.attack = [...attacks[0]]
+        // this.attack = [...attacks[Helpers.getRandomInt(2, 3)]]
 
         switch (this.attack[0]) {
             case "goToRandomX":
@@ -111,9 +113,14 @@ export class Ufo extends Enemy {
                 let k = Ufo.stars[this.line].length - 1
                 this.go(Ufo.stars[this.line][k])
                 break
-            // case "die":
-            //     this.state = 0;
-            //     break
+            case "goKamikaze":
+                this.go(Ufo.stars[this.line][0])
+                this.target!.x += 15 * this.vecX
+                this.target!.y += 15 * this.vecY
+                break
+            case "die":
+                this.state = -2;
+                break
         }
         this.attack.shift()
     }

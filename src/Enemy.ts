@@ -1,6 +1,4 @@
 import { GameObject } from "./GameObject"
-import { Player } from "./Player";
-import { Helpers } from "./Helpers";
 import { Star } from "./Star";
 
 //STATES
@@ -8,7 +6,8 @@ import { Star } from "./Star";
 // 1 - alive
 // 0 - kiled by player
 // -1 - player and enemy colision
-// -2 - dead, but draw bullet
+// -2 - dead by suicide
+// -3 - dead, but draw bullet
 
 export abstract class Enemy extends GameObject {
     speed: number
