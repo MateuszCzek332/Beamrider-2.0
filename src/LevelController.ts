@@ -120,8 +120,12 @@ export class LevelController {
                     break
                 case 0:
                     player.bullet = null;
-                    this.ufoTab.splice(i, 1);
-                    i--;
+                    if (ufo.bullet == null) {
+                        this.ufoTab.splice(i, 1);
+                        i--;
+                    } else {
+                        ufo.state = -3
+                    }
                     this.enemyToKill--;
                     this.points += 44;
                     if (this.checkLv())
@@ -143,6 +147,13 @@ export class LevelController {
                     this.ufoTab.splice(i, 1);
                     i--;
                     this.spawnUfo()
+                    break
+                case -3:
+                    ufo.drawBullet(ctx)
+                    if (ufo.bullet == null) {
+                        this.ufoTab.splice(i, 1);
+                        i--;
+                    }
                     break
             }
 

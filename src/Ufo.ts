@@ -29,12 +29,7 @@ export class Ufo extends Enemy {
     update = (ctx: CanvasRenderingContext2D, player: Player) => {
         ctx.drawImage(this.image, this.x - this.xd, this.y - this.yd);
 
-        if (this.bullet != null) {
-            this.bullet.update(ctx);
-            if (this.bullet.state == 0)
-                this.bullet = null;
-        }
-
+        this.drawBullet(ctx)
 
         if (this.checkTarget()) {
             this.readComand();
@@ -50,6 +45,14 @@ export class Ufo extends Enemy {
         else if (Helpers.checkCollision(this.bullet, player))
             this.state = 2;
 
+    }
+
+    drawBullet = (ctx: CanvasRenderingContext2D,) => {
+        if (this.bullet != null) {
+            this.bullet.update(ctx);
+            if (this.bullet.state == 0)
+                this.bullet = null;
+        }
     }
 
     readComand = () => {
