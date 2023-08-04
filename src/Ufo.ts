@@ -13,12 +13,12 @@ export class Ufo extends Enemy {
     line: number;
     level: number;
     constructor(stars: Star[][], lv: number) {
-        super('./gfx/enemy/ufo/5.png', 10)
+        super('./gfx/enemy/ufo/1.png', 10)
         if (Ufo.stars.length == 0)
             Ufo.stars = stars
         this.level = (lv > Ufo.maxLv ? Ufo.maxLv : lv) - 1
         this.x = 400
-        this.y = 70
+        this.y = 80
         this.line = 3
 
         // this.attack = [...attacks[Helpers.getRandomInt(0, maxAttackPerLv[this.level])]];
@@ -28,7 +28,7 @@ export class Ufo extends Enemy {
 
     update = (ctx: CanvasRenderingContext2D, player: Player) => {
         ctx.drawImage(this.image, this.x - this.xd, this.y - this.yd);
-
+        this.checkImage()
         this.drawBullet(ctx)
 
         if (this.checkTarget()) {
@@ -45,6 +45,26 @@ export class Ufo extends Enemy {
         else if (Helpers.checkCollision(this.bullet, player))
             this.state = 2;
 
+    }
+
+    checkImage = () => {
+        switch (true) {
+            case this.y < 100 && this.image.src != './gfx/enemy/ufo/1.png':
+                this.image.src = './gfx/enemy/ufo/1.png'
+                break
+            case this.y < 133 && this.image.src != './gfx/enemy/ufo/2.png':
+                this.image.src = './gfx/enemy/ufo/2.png'
+                break
+            case this.y < 166 && this.image.src != './gfx/enemy/ufo/3.png':
+                this.image.src = './gfx/enemy/ufo/3.png'
+                break
+            case this.y < 200 && this.image.src != './gfx/enemy/ufo/4.png':
+                this.image.src = './gfx/enemy/ufo/4.png'
+                break
+            case this.image.src != './gfx/enemy/ufo/5.png':
+                this.image.src = './gfx/enemy/ufo/5.png'
+                break
+        }
     }
 
     drawBullet = (ctx: CanvasRenderingContext2D,) => {
