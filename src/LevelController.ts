@@ -4,14 +4,17 @@ import { Player } from "./Player";
 import { Boss } from "./Boss";
 import { BossHelper } from "./BossHelper";
 import { Helpers } from "./Helpers";
+import { Hp } from "./Hp";
 
 
 export class LevelController {
-
     level: number = 1;
     points: number = 0;
     private readonly lvGoal = 3;
     enemyToKill = this.lvGoal;
+
+    killsToHp;
+    hp: Hp | null = null;
 
     stars: Star[][] = [];
     boss: Boss | null = null;
@@ -19,6 +22,7 @@ export class LevelController {
     ufoTab: Ufo[] = []
     constructor(stars: Star[][]) {
         this.stars = stars
+        this.killsToHp = Helpers.getRandomInt(1, 2)
         this.spawnUfo()
     }
 
@@ -64,9 +68,10 @@ export class LevelController {
             case 0:
                 this.boss = null;
                 setTimeout(() => {
-                    this.level++;
                     this.bossHelpers = [];
+                    this.level++;
                     this.enemyToKill = this.lvGoal
+                    this.killsToHp = Helpers.getRandomInt(1, 2)
                     this.spawnUfo()
                 }, 1100)
                 break;
@@ -103,6 +108,26 @@ export class LevelController {
 
     updateLevel = (ctx: CanvasRenderingContext2D, player: Player) => {
 
+        if (this.hp != null)
+            switch (this.hp.state) {
+                case 2:
+                    player.hp++
+                    this.hp = null
+                    break;
+                case 1:
+                    this.hp.update(ctx, player)
+                    break;
+                case 0:
+                    this.hp = null
+                    break;
+                case -1:
+                    this.hp.update(ctx, player)
+                    break;
+                case -2:
+                    this.playerDies(player)
+                    break;
+            }
+
         for (let i: number = 0; i < this.ufoTab.length; i++) {
             let ufo = this.ufoTab[i]
             switch (ufo.state) {
@@ -128,20 +153,20 @@ export class LevelController {
                     }
                     this.enemyToKill--;
                     this.points += 44;
+
+                    if (this.enemyToKill == this.killsToHp) {
+                        console.log("spwan hp")
+                        let k = Helpers.getRandomInt(1, 5)
+                        this.hp = new Hp(this.stars[k][this.stars[k].length - 1], this.stars[k][0])
+                    }
                     if (this.checkLv())
                         this.spawnUfo()
                     break
                 case -1:
+                    this.killsToHp++
                     this.enemyToKill--;
                     this.points += 44;
-                    this.ufoTab = [];
-                    player.die()
-                    if (player.hp > 0) {
-                        setTimeout(() => {
-                            if (this.checkLv())
-                                this.spawnUfo()
-                        }, 2400)
-                    }
+                    this.playerDies(player)
                     break
                 case -2:
                     this.ufoTab.splice(i, 1);
@@ -161,6 +186,18 @@ export class LevelController {
 
     }
 
+    playerDies = (player: Player) => {
+        this.hp = null
+        this.ufoTab = [];
+        player.die()
+        if (player.hp > 0) {
+            setTimeout(() => {
+                if (this.checkLv())
+                    this.spawnUfo()
+            }, 2400)
+        }
+    }
+
     checkLv = () => {
         if (this.enemyToKill == 0) {
             this.ufoTab = [];
@@ -177,6 +214,7 @@ export class LevelController {
 
     spawnUfo = () => {
         this.ufoTab.push(new Ufo(this.stars, this.level))
+        console.log(this.killsToHp)
     }
 
 }
