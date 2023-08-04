@@ -5,10 +5,12 @@ import { Boss } from "./Boss";
 import { BossHelper } from "./BossHelper";
 import { Helpers } from "./Helpers";
 import { Hp } from "./Hp";
+import { Asteroid } from "./Asteroid";
 
 
 export class LevelController {
     level: number = 1;
+    playerAlive: boolean = true;
     points: number = 0;
     private readonly lvGoal = 3;
     enemyToKill = this.lvGoal;
@@ -20,10 +22,12 @@ export class LevelController {
     boss: Boss | null = null;
     bossHelpers: BossHelper[] = []
     ufoTab: Ufo[] = []
+    asteroidsTab: Asteroid[] = []
+
     constructor(stars: Star[][]) {
         this.stars = stars
         this.killsToHp = Helpers.getRandomInt(1, 2)
-        this.spawnUfo()
+        this.spawnEnemys()
     }
 
     update = (ctx: CanvasRenderingContext2D, player: Player) => {
@@ -72,7 +76,7 @@ export class LevelController {
                     this.level++;
                     this.enemyToKill = this.lvGoal
                     this.killsToHp = Helpers.getRandomInt(1, 2)
-                    this.spawnUfo()
+                    this.spawnEnemys()
                 }, 1100)
                 break;
         }
@@ -107,7 +111,12 @@ export class LevelController {
     }
 
     updateLevel = (ctx: CanvasRenderingContext2D, player: Player) => {
+        this.updateHp(ctx, player)
+        this.updateUfo(ctx, player)
+        this.updateAsteroids(ctx, player)
+    }
 
+    updateHp = (ctx: CanvasRenderingContext2D, player: Player) => {
         if (this.hp != null)
             switch (this.hp.state) {
                 case 2:
@@ -127,7 +136,9 @@ export class LevelController {
                     this.playerDies(player)
                     break;
             }
+    }
 
+    updateUfo = (ctx: CanvasRenderingContext2D, player: Player) => {
         for (let i: number = 0; i < this.ufoTab.length; i++) {
             let ufo = this.ufoTab[i]
             switch (ufo.state) {
@@ -182,24 +193,49 @@ export class LevelController {
             }
 
         }
+    }
 
+    updateAsteroids = (ctx: CanvasRenderingContext2D, player: Player) => {
+        for (let i: number = 0; i < this.asteroidsTab.length; i++) {
+            let asteroid = this.asteroidsTab[i]
+            switch (asteroid.state) {
+                case 1:
+                    if (this.playerAlive)
+                        asteroid.update(ctx, player)
+                    break
+                case 0:
+                    this.asteroidsTab.splice(i, 1);
+                    i--;
+                    this.spawnAsteroid()
+                    break
+                case -1:
+                    this.playerDies(player)
+                    break
+            }
+
+        }
     }
 
     playerDies = (player: Player) => {
         this.hp = null
         this.ufoTab = [];
+        this.asteroidsTab = [];
+        this.playerAlive = false
         player.die()
         if (player.hp > 0) {
             setTimeout(() => {
+                this.playerAlive = true
                 if (this.checkLv())
-                    this.spawnUfo()
-            }, 2400)
+                    this.spawnEnemys()
+            }, 3000)
         }
     }
 
     checkLv = () => {
         if (this.enemyToKill == 0) {
             this.ufoTab = [];
+            this.asteroidsTab = [];
+            this.hp = null;
             setTimeout(() => {
                 this.boss = new Boss()
                 setTimeout(() => this.bossHelpers.push(new BossHelper(this.stars)), Helpers.getRandomInt(10, 1000))
@@ -211,8 +247,27 @@ export class LevelController {
         return true
     }
 
+    spawnEnemys = () => {
+        this.asteroidsTab = []
+        this.spawnUfo()
+        this.spawnAsteroids()
+    }
+
     spawnUfo = () => {
         this.ufoTab.push(new Ufo(this.stars, this.level))
+    }
+
+    spawnAsteroids = () => {
+        if (this.level > 0) {
+            for (let i = 0; i < 2; i++) {
+                this.spawnAsteroid()
+            }
+        }
+    }
+
+    spawnAsteroid = () => {
+        let k = Helpers.getRandomInt(1, 5)
+        setTimeout(() => this.playerAlive && this.boss == null ? this.asteroidsTab.push(new Asteroid(this.stars[k][this.stars[k].length - 1], this.stars[k][0])) : null, Helpers.getRandomInt(10, 3000))
     }
 
 }
