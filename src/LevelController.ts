@@ -155,7 +155,6 @@ export class LevelController {
                     this.points += 44;
 
                     if (this.enemyToKill == this.killsToHp) {
-                        console.log("spwan hp")
                         let k = Helpers.getRandomInt(1, 5)
                         this.hp = new Hp(this.stars[k][this.stars[k].length - 1], this.stars[k][0])
                     }
@@ -214,7 +213,6 @@ export class LevelController {
 
     spawnUfo = () => {
         this.ufoTab.push(new Ufo(this.stars, this.level))
-        console.log(this.killsToHp)
     }
 
 }

@@ -13,7 +13,7 @@ import { Helpers } from "./Helpers";
 export class Hp extends Enemy {
     state: number = 1;
     constructor(start: Star, target: Star) {
-        super('./gfx/hp/1.png', 10)
+        super('./gfx/hp/4.png', 10)
         this.xHitBox = 30;
         this.yHitBox = 30
         this.x = start.x
@@ -22,7 +22,20 @@ export class Hp extends Enemy {
     }
 
     changeImg = () => {
-
+        switch (true) {
+            case this.y < 133 && this.image.src != './gfx/hp/4.png':
+                this.image.src = './gfx/hp/4.png'
+                break
+            case this.y < 166 && this.image.src != './gfx/hp/3.png':
+                this.image.src = './gfx/hp/3.png'
+                break
+            case this.y < 200 && this.image.src != './gfx/hp/2.png':
+                this.image.src = './gfx/hp/2.png'
+                break
+            case this.image.src != './gfx/hp/1.png':
+                this.image.src = './gfx/hp/1.png'
+                break
+        }
     }
 
     update = (ctx: CanvasRenderingContext2D, player: Player) => {
