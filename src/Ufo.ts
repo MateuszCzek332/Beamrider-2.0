@@ -4,6 +4,14 @@ import { Helpers } from "./Helpers";
 import { Enemy } from "./Enemy";
 import { EnemyBullet } from "./EnemyBullet";
 
+// UFO STATES
+//  2 - alive, player get hit by shoot 
+//  1 - alive
+//  0 - kiled by player
+// -1 - player and enemy colision
+// -2 - dead by suicide
+// -3 - dead, but draw bullet
+
 export class Ufo extends Enemy {
     static stars: Star[][] = []
     static readonly maxLv = 2
