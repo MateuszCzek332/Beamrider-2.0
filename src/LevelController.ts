@@ -7,6 +7,7 @@ import { Helpers } from "./Helpers";
 import { Hp } from "./Hp";
 import { Asteroid } from "./Asteroid";
 import { Pac } from "./Pac";
+import { Ball } from "./Ball";
 
 
 export class LevelController {
@@ -25,6 +26,7 @@ export class LevelController {
     ufoTab: Ufo[] = []
     asteroidsTab: Asteroid[] = []
     pac: Pac | null = null;
+    ball: Ball | null = null;
     killsToPac;
 
     constructor(stars: Star[][]) {
@@ -32,7 +34,8 @@ export class LevelController {
         this.killsToHp = Helpers.getRandomInt(2, 3)
         this.killsToPac = Helpers.getRandomInt(1, 4)
         // this.spawnEnemys()
-        this.spawnPac()
+        // this.spawnPac()
+        this.spawnBall()
     }
 
     update = (ctx: CanvasRenderingContext2D, player: Player) => {
@@ -121,6 +124,7 @@ export class LevelController {
         this.updateUfo(ctx, player)
         this.updateAsteroids(ctx, player)
         this.updatePac(ctx, player)
+        this.updateBall(ctx, player)
     }
 
     updateHp = (ctx: CanvasRenderingContext2D, player: Player) => {
@@ -240,6 +244,28 @@ export class LevelController {
 
     }
 
+    updateBall = (ctx: CanvasRenderingContext2D, player: Player) => {
+        if (this.ball != null)
+            switch (this.ball.state) {
+                case 2:
+                    this.ball = null
+                    this.playerDies(player)
+                    break
+                case 1:
+                    this.ball.update(ctx, player)
+                    break
+                case 0:
+                    this.ball = null
+                    break
+                case -1:
+                    this.ball = null
+                    this.points += 150
+                    break
+            }
+
+
+    }
+
     playerDies = (player: Player) => {
         this.hp = null
         this.ufoTab = [];
@@ -282,8 +308,12 @@ export class LevelController {
         if (this.enemyToKill == this.killsToHp)
             this.spawnHp()
 
-        if (this.enemyToKill == this.killsToPac)
+        if (Math.random() < 0.15)
             this.spawnPac()
+
+        if (Math.random() < 0.08)
+            this.spawnBall()
+
 
     }
 
@@ -310,10 +340,16 @@ export class LevelController {
     }
 
     spawnPac = () => {
-        if (this.level > 2) {
+        if (this.level > 2 && this.pac == null) {
             let k = Math.random() > 0.5 ? 0 : 6
             let l = k == 0 ? 6 : 0
             this.pac = new Pac(this.stars[k][Helpers.getRandomInt(6, 9)], this.stars[l][Helpers.getRandomInt(6, 9)])
+        }
+    }
+
+    spawnBall = () => {
+        if (this.level > 0 && this.ball == null) {
+            this.ball = new Ball(this.stars, 0, Helpers.getRandomInt(7, 9))
         }
     }
 
