@@ -30,6 +30,18 @@ canvas {
     margin: 0 auto;
 }
 
+#description {
+    width: 200px;
+    height: 200px;
+    padding: 10px;
+    background-color: blue;
+    position: absolute;
+    right: 0;
+    top: 230px;
+    color: black;
+    font-weight: bold;
+}
+
 @font-face {
     font-family: Atari;
     src: url(AtariClassic.ttf);
