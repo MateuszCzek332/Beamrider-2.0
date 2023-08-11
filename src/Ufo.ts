@@ -21,7 +21,7 @@ export class Ufo extends Enemy {
     line: number;
     level: number;
     constructor(stars: Star[][], lv: number) {
-        super('./gfx/enemy/ufo/1.png', 10)
+        super('./gfx/enemy/ufo/1.png', 7)
         if (Ufo.stars.length == 0)
             Ufo.stars = stars
         this.level = (lv > Ufo.maxLv ? Ufo.maxLv : lv) - 1
@@ -29,8 +29,8 @@ export class Ufo extends Enemy {
         this.y = 80
         this.line = 3
 
-        // this.attack = [...attacks[Helpers.getRandomInt(0, maxAttackPerLv[this.level])]];
-        this.attack = [...attacks[0]];
+        this.attack = [...attacks[Helpers.getRandomInt(0, maxAttackPerLv[this.level])]];
+        // this.attack = [...attacks[0]];
         this.readComand()
     }
 
@@ -133,7 +133,9 @@ const attacks = [
         "goToRandomX",
         "goToRandomX",
         "goToRandom",
+        "goToRandom",
         "shoot",
+        "goToRandom",
         "goBack",
     ],
     [
@@ -149,11 +151,6 @@ const attacks = [
         "goToRandomX",
         "goToRandomX",
         "goToRandom",
-        "goBack",
-    ],
-    [
-        "goToRandomX",
-        "goToRandomX",
         "goToRandom",
         "goToRandom",
         "goBack",
@@ -163,7 +160,15 @@ const attacks = [
         "goToRandomX",
         "goToRandom",
         "goToRandom",
+        "goBack",
+    ],
+    [
+        "goToRandomX",
+        "goToRandomX",
         "goToRandom",
+        "goToRandom",
+        "goToRandom",
+        "shoot",
         "goToRandom",
         "goBack",
     ],
